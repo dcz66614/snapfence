@@ -1,0 +1,38 @@
+{
+  "fixtureId": "U05",
+  "scenario": {
+    "scenarioId": "U05_DB_FIRST_TWO_UPLOADS_ORPHANS",
+    "strategy": "DB_FIRST",
+    "maxEvents": 10,
+    "operations": [
+      {
+        "opId": "upload-A",
+        "kind": "UPLOAD",
+        "fileId": "A",
+        "objectId": "A-v1",
+        "digest": "fixture-digest-A"
+      },
+      {
+        "opId": "upload-B",
+        "kind": "UPLOAD",
+        "fileId": "B",
+        "objectId": "B-v1",
+        "digest": "fixture-digest-B"
+      }
+    ]
+  },
+  "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+  "expectedDiagnostics": [
+    "IN_FLIGHT_OPERATION",
+    "NO_COMMON_BOUNDARY",
+    "ORPHAN_BLOB"
+  ],
+  "expectedCounterexample": [
+    "DB_SNAPSHOT",
+    "upload-A:BLOB_PUT",
+    "BLOB_SNAPSHOT"
+  ],
+  "expectedCounterexampleLength": 3,
+  "eventCount": 6,
+  "reason": "DB_SNAPSHOT 先拍（DB 为空），upload-A 的 BLOB_PUT 写入 A-v1 后 BLOB_SNAPSHOT 捕获到 A-v1 孤立；upload-A 在途；快照对无共同边界。最短性：长度 2 的终态一致；长度 3 中本反例是按 BFS 字典序最先弹出的不一致终态。注：本场景名义上的“多个孤立对象”模式存在于更长路径：[DB_SNAPSHOT, upload-A:BLOB_PUT, upload-B:BLOB_PUT, BLOB_SNAPSHOT]（长度 4），Blob 快照同时含 A-v1 与 B-v1 两个孤立对象；但 §4.6 要求最短反例，故期望反例为长度 3 的单孤立路径。"
+}

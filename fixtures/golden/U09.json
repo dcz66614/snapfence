@@ -1,0 +1,32 @@
+{
+  "fixtureId": "U09",
+  "scenario": {
+    "scenarioId": "U09_FILE_FIRST_UPDATE_NEW_MISSING",
+    "strategy": "FILE_FIRST",
+    "maxEvents": 10,
+    "operations": [
+      {
+        "opId": "update-A",
+        "kind": "UPDATE",
+        "fileId": "A",
+        "objectId": "A-v2",
+        "oldObjectId": "A-v1",
+        "digest": "fixture-digest-A-v2"
+      }
+    ]
+  },
+  "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+  "expectedDiagnostics": [
+    "IN_FLIGHT_OPERATION",
+    "NO_COMMON_BOUNDARY",
+    "ORPHAN_BLOB"
+  ],
+  "expectedCounterexample": [
+    "update-A:BLOB_PUT_NEW",
+    "BLOB_SNAPSHOT",
+    "DB_SNAPSHOT"
+  ],
+  "expectedCounterexampleLength": 3,
+  "eventCount": 5,
+  "reason": "update-A 的 BLOB_PUT_NEW 先写新版 A-v2@2，随后 BLOB_SNAPSHOT 捕获 {A-v1, A-v2}，最后 DB_SNAPSHOT 捕获仍引旧版 A-v1 的 DB（DB_REPOINT 未执行）。A-v2@2 孤立；update-A 在两次快照捕获时在途；快照对无共同边界。最短性：长度 2 的终态一致；长度 3 的终态中 [BLOB_SNAPSHOT, update-A:BLOB_PUT_NEW, DB_SNAPSHOT] 的快照对等于初始边界（一致），本反例是其后按字典序最先弹出的不一致终态。注：“新版本缺失”模式存在于更长路径：[BLOB_SNAPSHOT, BLOB_PUT_NEW, DB_REPOINT, DB_SNAPSHOT]（长度 4）——DB 快照已指新版 A-v2@2，Blob 快照只有旧版 A-v1@1，悬空引用；最短反例仍为长度 3 的孤立路径。"
+}

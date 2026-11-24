@@ -1,0 +1,24 @@
+{
+  "fixtureId": "G11",
+  "scenario": {
+    "scenarioId": "G11_PAUSE_WRITES_UPDATE_COMPLETE",
+    "strategy": "PAUSE_WRITES",
+    "maxEvents": 10,
+    "operations": [
+      {
+        "opId": "update-A",
+        "kind": "UPDATE",
+        "fileId": "A",
+        "objectId": "A-v2",
+        "oldObjectId": "A-v1",
+        "digest": "fixture-digest-A-v2"
+      }
+    ]
+  },
+  "expectedVerdict": "SAFE_WITHIN_BOUND",
+  "expectedDiagnostics": [],
+  "expectedCounterexample": [],
+  "expectedCounterexampleLength": 0,
+  "eventCount": 5,
+  "reason": "PAUSE_WRITES：两次快照必落在同一合法边界（操作开始前，或 update-A 完成后）。全部合法路径的快照对均为边界态，一致。SAFE。"
+}

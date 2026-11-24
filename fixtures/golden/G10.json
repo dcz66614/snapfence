@@ -1,0 +1,22 @@
+{
+  "fixtureId": "G10",
+  "scenario": {
+    "scenarioId": "G10_PAUSE_WRITES_DELETE_COMPLETE",
+    "strategy": "PAUSE_WRITES",
+    "maxEvents": 10,
+    "operations": [
+      {
+        "opId": "delete-C",
+        "kind": "DELETE",
+        "fileId": "C",
+        "objectId": "C-v1"
+      }
+    ]
+  },
+  "expectedVerdict": "SAFE_WITHIN_BOUND",
+  "expectedDiagnostics": [],
+  "expectedCounterexample": [],
+  "expectedCounterexampleLength": 0,
+  "eventCount": 4,
+  "reason": "PAUSE_WRITES：两次快照必落在同一合法边界（操作开始前，或 delete-C 完成后）。全部合法路径的快照对均为边界态，一致。SAFE。"
+}

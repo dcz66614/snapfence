@@ -1,0 +1,30 @@
+{
+  "fixtureId": "U08",
+  "scenario": {
+    "scenarioId": "U08_FILE_FIRST_DELETE_ORPHAN",
+    "strategy": "FILE_FIRST",
+    "maxEvents": 10,
+    "operations": [
+      {
+        "opId": "delete-C",
+        "kind": "DELETE",
+        "fileId": "C",
+        "objectId": "C-v1"
+      }
+    ]
+  },
+  "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+  "expectedDiagnostics": [
+    "IN_FLIGHT_OPERATION",
+    "NO_COMMON_BOUNDARY",
+    "ORPHAN_BLOB"
+  ],
+  "expectedCounterexample": [
+    "BLOB_SNAPSHOT",
+    "delete-C:DB_UNLINK",
+    "DB_SNAPSHOT"
+  ],
+  "expectedCounterexampleLength": 3,
+  "eventCount": 4,
+  "reason": "BLOB_SNAPSHOT 先拍（Blob 含 C-v1），delete-C 的 DB_UNLINK 删 DB 记录 C 后 DB_SNAPSHOT 捕获空 DB。DB 空、Blob 含 C-v1，C-v1 孤立；delete-C 在两次快照捕获时在途；快照对无共同边界。最短性：长度 2 的终态一致；本反例是长度 3 中按 BFS 字典序最先弹出的不一致终态。"
+}

@@ -1,0 +1,30 @@
+{
+  "fixtureId": "U02",
+  "scenario": {
+    "scenarioId": "U02_DB_FIRST_DELETE_DANGLING",
+    "strategy": "DB_FIRST",
+    "maxEvents": 10,
+    "operations": [
+      {
+        "opId": "delete-C",
+        "kind": "DELETE",
+        "fileId": "C",
+        "objectId": "C-v1"
+      }
+    ]
+  },
+  "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+  "expectedDiagnostics": [
+    "IN_FLIGHT_OPERATION",
+    "NO_COMMON_BOUNDARY",
+    "ORPHAN_BLOB"
+  ],
+  "expectedCounterexample": [
+    "delete-C:DB_UNLINK",
+    "DB_SNAPSHOT",
+    "BLOB_SNAPSHOT"
+  ],
+  "expectedCounterexampleLength": 3,
+  "eventCount": 4,
+  "reason": "delete-C 的 DB_UNLINK 先执行（DB 记录 C 已删），随后 DB_SNAPSHOT 捕获空 DB，BLOB_SNAPSHOT 捕获仍含 C-v1 的 Blob（BLOB_DELETE 未执行）。DB 空、Blob 含 C-v1，二者无共同边界（边界 0 为删除前态，边界 1 为删除完成态）；C-v1 为孤立 Blob，delete-C 在两次快照捕获时均在途。最短性：长度 2 的终态一致；长度 3 的终态中 [DB_SNAPSHOT, delete-C:DB_UNLINK, BLOB_SNAPSHOT] 的快照对等于初始边界（一致），本反例是其后按字典序最先弹出的不一致终态。另：§9.3 的 4 事件顺序 [DB_SNAPSHOT, DB_UNLINK, BLOB_DELETE, BLOB_SNAPSHOT] 也是不一致（悬空引用：DB 快照仍引 C-v1，Blob 快照已删 C-v1），但不是最短。"
+}

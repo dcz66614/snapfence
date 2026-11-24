@@ -1,0 +1,26 @@
+{
+  "fixtureId": "G02",
+  "scenario": {
+    "scenarioId": "G02_DB_FIRST_UPLOAD_COMPLETE",
+    "strategy": "DB_FIRST",
+    "maxEvents": 10,
+    "operations": [
+      {
+        "opId": "upload-A",
+        "kind": "UPLOAD",
+        "fileId": "A",
+        "objectId": "A-v1",
+        "digest": "fixture-digest-A"
+      }
+    ],
+    "snapshotsAfter": [
+      "upload-A"
+    ]
+  },
+  "expectedVerdict": "SAFE_WITHIN_BOUND",
+  "expectedDiagnostics": [],
+  "expectedCounterexample": [],
+  "expectedCounterexampleLength": 0,
+  "eventCount": 4,
+  "reason": "snapshotsAfter（ADR-001）把两次快照固定在 upload-A 完成后；唯一合法路径 [upload-A:BLOB_PUT, upload-A:DB_LINK, DB_SNAPSHOT, BLOB_SNAPSHOT]，快照对等于上传完成边界，一致。SAFE。"
+}

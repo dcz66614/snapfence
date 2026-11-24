@@ -1,0 +1,37 @@
+{
+  "fixtureId": "U06",
+  "scenario": {
+    "scenarioId": "U06_DB_FIRST_UPLOAD_DELETE_MIXED",
+    "strategy": "DB_FIRST",
+    "maxEvents": 10,
+    "operations": [
+      {
+        "opId": "upload-A",
+        "kind": "UPLOAD",
+        "fileId": "A",
+        "objectId": "A-v1",
+        "digest": "fixture-digest-A"
+      },
+      {
+        "opId": "delete-B",
+        "kind": "DELETE",
+        "fileId": "B",
+        "objectId": "B-v1"
+      }
+    ]
+  },
+  "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+  "expectedDiagnostics": [
+    "IN_FLIGHT_OPERATION",
+    "NO_COMMON_BOUNDARY",
+    "ORPHAN_BLOB"
+  ],
+  "expectedCounterexample": [
+    "DB_SNAPSHOT",
+    "upload-A:BLOB_PUT",
+    "BLOB_SNAPSHOT"
+  ],
+  "expectedCounterexampleLength": 3,
+  "eventCount": 6,
+  "reason": "DB_SNAPSHOT 先拍（DB 含 B 的旧记录 B→B-v1），upload-A 的 BLOB_PUT 写入 A-v1 后 BLOB_SNAPSHOT 捕获 {B-v1, A-v1}。DB 快照（仅 B）与 Blob 快照（B 加孤立 A）无共同边界：四个合法边界为 ({B},{B-v1})、({A,B},{A-v1,B-v1})、({},{})、({A},{A-v1})，本快照对 ({B},{B-v1,A-v1}) 不等于其中任一；A-v1 孤立，upload-A 在途。最短性：长度 2 的终态一致；长度 3 的终态中 [DB_SNAPSHOT, delete-B:DB_UNLINK, BLOB_SNAPSHOT] 的快照对等于初始边界（一致），本反例是其后按字典序最先弹出的不一致终态。注：双组件不一致的另一形态见长度 4 路径 [delete-B:DB_UNLINK, DB_SNAPSHOT, upload-A:BLOB_PUT, BLOB_SNAPSHOT]，DB 空、Blob 含 B-v1 与 A-v1 两个孤立对象。"
+}

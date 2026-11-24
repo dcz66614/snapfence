@@ -1,0 +1,31 @@
+{
+  "fixtureId": "U01",
+  "scenario": {
+    "scenarioId": "U01_DB_FIRST_UPLOAD_ORPHAN",
+    "strategy": "DB_FIRST",
+    "maxEvents": 10,
+    "operations": [
+      {
+        "opId": "upload-A",
+        "kind": "UPLOAD",
+        "fileId": "A",
+        "objectId": "A-v1",
+        "digest": "fixture-digest-A"
+      }
+    ]
+  },
+  "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+  "expectedDiagnostics": [
+    "IN_FLIGHT_OPERATION",
+    "NO_COMMON_BOUNDARY",
+    "ORPHAN_BLOB"
+  ],
+  "expectedCounterexample": [
+    "DB_SNAPSHOT",
+    "upload-A:BLOB_PUT",
+    "BLOB_SNAPSHOT"
+  ],
+  "expectedCounterexampleLength": 3,
+  "eventCount": 4,
+  "reason": "DB_SNAPSHOT 先拍（DB 为空），随后 upload-A 的 BLOB_PUT 写入 A-v1 但 DB_LINK 尚未执行，此时 BLOB_SNAPSHOT 捕获到 A-v1。DB 快照为空、Blob 快照含 A-v1，二者无共同完整操作边界（边界 0 为双空，边界 1 为上传完成态）；A-v1 为孤立 Blob，upload-A 在 Blob 快照捕获时在途。最短性：长度 2 的终态只有 [DB_SNAPSHOT, BLOB_SNAPSHOT]（双空，一致）；长度 3 中本反例是按 BFS 字典序最先弹出的不一致终态。"
+}

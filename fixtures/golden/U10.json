@@ -1,0 +1,32 @@
+{
+  "fixtureId": "U10",
+  "scenario": {
+    "scenarioId": "U10_FILE_FIRST_UPDATE_OLD_ORPHAN",
+    "strategy": "FILE_FIRST",
+    "maxEvents": 10,
+    "operations": [
+      {
+        "opId": "update-A",
+        "kind": "UPDATE",
+        "fileId": "A",
+        "objectId": "A-v2",
+        "oldObjectId": "A-v1",
+        "digest": "fixture-digest-A-v2"
+      }
+    ]
+  },
+  "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+  "expectedDiagnostics": [
+    "IN_FLIGHT_OPERATION",
+    "NO_COMMON_BOUNDARY",
+    "ORPHAN_BLOB"
+  ],
+  "expectedCounterexample": [
+    "update-A:BLOB_PUT_NEW",
+    "BLOB_SNAPSHOT",
+    "DB_SNAPSHOT"
+  ],
+  "expectedCounterexampleLength": 3,
+  "eventCount": 5,
+  "reason": "与 U09 同一输入形状（单次 UPDATE A，FILE_FIRST），故最短反例相同：BLOB_PUT_NEW 写入新版 A-v2@2 后 BLOB_SNAPSHOT 捕获两个版本，DB_SNAPSHOT 捕获仍引旧版 A-v1 的 DB，A-v2@2 孤立、旧版 A-v1@1 仍残留在 Blob 快照中；update-A 在途；快照对无共同边界。U10 之名即指此最短路径的失效模式（旧版残留、新版孤立）。U09/U10 的区别只在叙事侧重（见 U09 的注），输入与判定完全相同——这是 §6 冻结目录的既有性质，不是夹具错误。"
+}

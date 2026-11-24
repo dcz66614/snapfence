@@ -1,0 +1,27 @@
+{
+  "fixtureId": "G04",
+  "scenario": {
+    "scenarioId": "G04_DB_FIRST_UPDATE_COMPLETE",
+    "strategy": "DB_FIRST",
+    "maxEvents": 10,
+    "operations": [
+      {
+        "opId": "update-A",
+        "kind": "UPDATE",
+        "fileId": "A",
+        "objectId": "A-v2",
+        "oldObjectId": "A-v1",
+        "digest": "fixture-digest-A-v2"
+      }
+    ],
+    "snapshotsAfter": [
+      "update-A"
+    ]
+  },
+  "expectedVerdict": "SAFE_WITHIN_BOUND",
+  "expectedDiagnostics": [],
+  "expectedCounterexample": [],
+  "expectedCounterexampleLength": 0,
+  "eventCount": 5,
+  "reason": "snapshotsAfter 把两次快照固定在 update-A 完成后；唯一合法路径 [update-A:BLOB_PUT_NEW, update-A:DB_REPOINT, update-A:BLOB_DELETE_OLD, DB_SNAPSHOT, BLOB_SNAPSHOT]，快照对等于更新完成边界（DB 指 A-v2@2，Blob 只含 A-v2@2），一致。SAFE。"
+}

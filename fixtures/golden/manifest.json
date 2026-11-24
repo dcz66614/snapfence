@@ -1,0 +1,572 @@
+{
+  "manifestVersion": 1,
+  "projectId": "P030",
+  "projectName": "SnapFence",
+  "specVersion": "1.0.1",
+  "goldenTotal": 24,
+  "unsafeExpected": 12,
+  "safeExpected": 12,
+  "scenarios": [
+    {
+      "fixtureId": "U01",
+      "scenarioId": "U01_DB_FIRST_UPLOAD_ORPHAN",
+      "strategy": "DB_FIRST",
+      "operations": [
+        {
+          "opId": "upload-A",
+          "kind": "UPLOAD",
+          "fileId": "A"
+        }
+      ],
+      "snapshotsAfter": [],
+      "eventCount": 4,
+      "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 3
+    },
+    {
+      "fixtureId": "U02",
+      "scenarioId": "U02_DB_FIRST_DELETE_DANGLING",
+      "strategy": "DB_FIRST",
+      "operations": [
+        {
+          "opId": "delete-C",
+          "kind": "DELETE",
+          "fileId": "C"
+        }
+      ],
+      "snapshotsAfter": [],
+      "eventCount": 4,
+      "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 3
+    },
+    {
+      "fixtureId": "U03",
+      "scenarioId": "U03_DB_FIRST_UPDATE_OLD_MISSING",
+      "strategy": "DB_FIRST",
+      "operations": [
+        {
+          "opId": "update-A",
+          "kind": "UPDATE",
+          "fileId": "A"
+        }
+      ],
+      "snapshotsAfter": [],
+      "eventCount": 5,
+      "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 3
+    },
+    {
+      "fixtureId": "U04",
+      "scenarioId": "U04_DB_FIRST_UPDATE_NEW_ORPHAN",
+      "strategy": "DB_FIRST",
+      "operations": [
+        {
+          "opId": "update-A",
+          "kind": "UPDATE",
+          "fileId": "A"
+        }
+      ],
+      "snapshotsAfter": [],
+      "eventCount": 5,
+      "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 3
+    },
+    {
+      "fixtureId": "U05",
+      "scenarioId": "U05_DB_FIRST_TWO_UPLOADS_ORPHANS",
+      "strategy": "DB_FIRST",
+      "operations": [
+        {
+          "opId": "upload-A",
+          "kind": "UPLOAD",
+          "fileId": "A"
+        },
+        {
+          "opId": "upload-B",
+          "kind": "UPLOAD",
+          "fileId": "B"
+        }
+      ],
+      "snapshotsAfter": [],
+      "eventCount": 6,
+      "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 3
+    },
+    {
+      "fixtureId": "U06",
+      "scenarioId": "U06_DB_FIRST_UPLOAD_DELETE_MIXED",
+      "strategy": "DB_FIRST",
+      "operations": [
+        {
+          "opId": "upload-A",
+          "kind": "UPLOAD",
+          "fileId": "A"
+        },
+        {
+          "opId": "delete-B",
+          "kind": "DELETE",
+          "fileId": "B"
+        }
+      ],
+      "snapshotsAfter": [],
+      "eventCount": 6,
+      "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 3
+    },
+    {
+      "fixtureId": "U07",
+      "scenarioId": "U07_FILE_FIRST_UPLOAD_DANGLING",
+      "strategy": "FILE_FIRST",
+      "operations": [
+        {
+          "opId": "upload-B",
+          "kind": "UPLOAD",
+          "fileId": "B"
+        }
+      ],
+      "snapshotsAfter": [],
+      "eventCount": 4,
+      "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 3
+    },
+    {
+      "fixtureId": "U08",
+      "scenarioId": "U08_FILE_FIRST_DELETE_ORPHAN",
+      "strategy": "FILE_FIRST",
+      "operations": [
+        {
+          "opId": "delete-C",
+          "kind": "DELETE",
+          "fileId": "C"
+        }
+      ],
+      "snapshotsAfter": [],
+      "eventCount": 4,
+      "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 3
+    },
+    {
+      "fixtureId": "U09",
+      "scenarioId": "U09_FILE_FIRST_UPDATE_NEW_MISSING",
+      "strategy": "FILE_FIRST",
+      "operations": [
+        {
+          "opId": "update-A",
+          "kind": "UPDATE",
+          "fileId": "A"
+        }
+      ],
+      "snapshotsAfter": [],
+      "eventCount": 5,
+      "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 3
+    },
+    {
+      "fixtureId": "U10",
+      "scenarioId": "U10_FILE_FIRST_UPDATE_OLD_ORPHAN",
+      "strategy": "FILE_FIRST",
+      "operations": [
+        {
+          "opId": "update-A",
+          "kind": "UPDATE",
+          "fileId": "A"
+        }
+      ],
+      "snapshotsAfter": [],
+      "eventCount": 5,
+      "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 3
+    },
+    {
+      "fixtureId": "U11",
+      "scenarioId": "U11_FILE_FIRST_UPLOAD_UPDATE_MIX",
+      "strategy": "FILE_FIRST",
+      "operations": [
+        {
+          "opId": "upload-A",
+          "kind": "UPLOAD",
+          "fileId": "A"
+        },
+        {
+          "opId": "update-B",
+          "kind": "UPDATE",
+          "fileId": "B"
+        }
+      ],
+      "snapshotsAfter": [],
+      "eventCount": 7,
+      "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 3
+    },
+    {
+      "fixtureId": "U12",
+      "scenarioId": "U12_FILE_FIRST_UPDATE_DELETE_NO_BOUNDARY",
+      "strategy": "FILE_FIRST",
+      "operations": [
+        {
+          "opId": "update-A",
+          "kind": "UPDATE",
+          "fileId": "A"
+        },
+        {
+          "opId": "delete-B",
+          "kind": "DELETE",
+          "fileId": "B"
+        }
+      ],
+      "snapshotsAfter": [],
+      "eventCount": 7,
+      "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 3
+    },
+    {
+      "fixtureId": "G01",
+      "scenarioId": "G01_DB_FIRST_IDLE",
+      "strategy": "DB_FIRST",
+      "operations": [],
+      "snapshotsAfter": [],
+      "eventCount": 2,
+      "expectedVerdict": "SAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 0
+    },
+    {
+      "fixtureId": "G02",
+      "scenarioId": "G02_DB_FIRST_UPLOAD_COMPLETE",
+      "strategy": "DB_FIRST",
+      "operations": [
+        {
+          "opId": "upload-A",
+          "kind": "UPLOAD",
+          "fileId": "A"
+        }
+      ],
+      "snapshotsAfter": [
+        "upload-A"
+      ],
+      "eventCount": 4,
+      "expectedVerdict": "SAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 0
+    },
+    {
+      "fixtureId": "G03",
+      "scenarioId": "G03_DB_FIRST_DELETE_COMPLETE",
+      "strategy": "DB_FIRST",
+      "operations": [
+        {
+          "opId": "delete-C",
+          "kind": "DELETE",
+          "fileId": "C"
+        }
+      ],
+      "snapshotsAfter": [
+        "delete-C"
+      ],
+      "eventCount": 4,
+      "expectedVerdict": "SAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 0
+    },
+    {
+      "fixtureId": "G04",
+      "scenarioId": "G04_DB_FIRST_UPDATE_COMPLETE",
+      "strategy": "DB_FIRST",
+      "operations": [
+        {
+          "opId": "update-A",
+          "kind": "UPDATE",
+          "fileId": "A"
+        }
+      ],
+      "snapshotsAfter": [
+        "update-A"
+      ],
+      "eventCount": 5,
+      "expectedVerdict": "SAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 0
+    },
+    {
+      "fixtureId": "G05",
+      "scenarioId": "G05_FILE_FIRST_IDLE",
+      "strategy": "FILE_FIRST",
+      "operations": [],
+      "snapshotsAfter": [],
+      "eventCount": 2,
+      "expectedVerdict": "SAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 0
+    },
+    {
+      "fixtureId": "G06",
+      "scenarioId": "G06_FILE_FIRST_UPLOAD_COMPLETE",
+      "strategy": "FILE_FIRST",
+      "operations": [
+        {
+          "opId": "upload-A",
+          "kind": "UPLOAD",
+          "fileId": "A"
+        }
+      ],
+      "snapshotsAfter": [
+        "upload-A"
+      ],
+      "eventCount": 4,
+      "expectedVerdict": "SAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 0
+    },
+    {
+      "fixtureId": "G07",
+      "scenarioId": "G07_FILE_FIRST_DELETE_COMPLETE",
+      "strategy": "FILE_FIRST",
+      "operations": [
+        {
+          "opId": "delete-C",
+          "kind": "DELETE",
+          "fileId": "C"
+        }
+      ],
+      "snapshotsAfter": [
+        "delete-C"
+      ],
+      "eventCount": 4,
+      "expectedVerdict": "SAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 0
+    },
+    {
+      "fixtureId": "G08",
+      "scenarioId": "G08_FILE_FIRST_UPDATE_COMPLETE",
+      "strategy": "FILE_FIRST",
+      "operations": [
+        {
+          "opId": "update-A",
+          "kind": "UPDATE",
+          "fileId": "A"
+        }
+      ],
+      "snapshotsAfter": [
+        "update-A"
+      ],
+      "eventCount": 5,
+      "expectedVerdict": "SAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 0
+    },
+    {
+      "fixtureId": "G09",
+      "scenarioId": "G09_PAUSE_WRITES_UPLOAD_COMPLETE",
+      "strategy": "PAUSE_WRITES",
+      "operations": [
+        {
+          "opId": "upload-A",
+          "kind": "UPLOAD",
+          "fileId": "A"
+        }
+      ],
+      "snapshotsAfter": [],
+      "eventCount": 4,
+      "expectedVerdict": "SAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 0
+    },
+    {
+      "fixtureId": "G10",
+      "scenarioId": "G10_PAUSE_WRITES_DELETE_COMPLETE",
+      "strategy": "PAUSE_WRITES",
+      "operations": [
+        {
+          "opId": "delete-C",
+          "kind": "DELETE",
+          "fileId": "C"
+        }
+      ],
+      "snapshotsAfter": [],
+      "eventCount": 4,
+      "expectedVerdict": "SAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 0
+    },
+    {
+      "fixtureId": "G11",
+      "scenarioId": "G11_PAUSE_WRITES_UPDATE_COMPLETE",
+      "strategy": "PAUSE_WRITES",
+      "operations": [
+        {
+          "opId": "update-A",
+          "kind": "UPDATE",
+          "fileId": "A"
+        }
+      ],
+      "snapshotsAfter": [],
+      "eventCount": 5,
+      "expectedVerdict": "SAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 0
+    },
+    {
+      "fixtureId": "G12",
+      "scenarioId": "G12_PAUSE_WRITES_FOUR_UPLOADS",
+      "strategy": "PAUSE_WRITES",
+      "operations": [
+        {
+          "opId": "upload-A",
+          "kind": "UPLOAD",
+          "fileId": "A"
+        },
+        {
+          "opId": "upload-B",
+          "kind": "UPLOAD",
+          "fileId": "B"
+        },
+        {
+          "opId": "upload-C",
+          "kind": "UPLOAD",
+          "fileId": "C"
+        },
+        {
+          "opId": "upload-D",
+          "kind": "UPLOAD",
+          "fileId": "D"
+        }
+      ],
+      "snapshotsAfter": [],
+      "eventCount": 10,
+      "expectedVerdict": "SAFE_WITHIN_BOUND",
+      "expectedCounterexampleLength": 0
+    }
+  ],
+  "coverage": {
+    "operationsByStrategy": {
+      "UPLOAD/DB_FIRST": [
+        "U01",
+        "U05",
+        "U06",
+        "G02"
+      ],
+      "UPLOAD/FILE_FIRST": [
+        "U07",
+        "U11",
+        "G06"
+      ],
+      "UPLOAD/PAUSE_WRITES": [
+        "G09",
+        "G12"
+      ],
+      "DELETE/DB_FIRST": [
+        "U02",
+        "U06",
+        "G03"
+      ],
+      "DELETE/FILE_FIRST": [
+        "U08",
+        "U12",
+        "G07"
+      ],
+      "DELETE/PAUSE_WRITES": [
+        "G10"
+      ],
+      "UPDATE/DB_FIRST": [
+        "U03",
+        "U04",
+        "G04"
+      ],
+      "UPDATE/FILE_FIRST": [
+        "U09",
+        "U10",
+        "U11",
+        "U12",
+        "G08"
+      ],
+      "UPDATE/PAUSE_WRITES": [
+        "G11"
+      ]
+    },
+    "items": [
+      {
+        "item": "orphan file (ORPHAN_BLOB)",
+        "covered": true,
+        "scenarios": [
+          "U01",
+          "U02",
+          "U03",
+          "U04",
+          "U05",
+          "U06",
+          "U07",
+          "U08",
+          "U09",
+          "U10",
+          "U11",
+          "U12"
+        ],
+        "note": "全部 12 个 U 场景的最短反例均为孤立 Blob 模式（见 T005_GOLDEN_DERIVATIONS.md §2：长度 3 的终态只可能出现孤立 Blob，不可能出现悬空引用）。"
+      },
+      {
+        "item": "dangling reference (DANGLING_REFERENCE)",
+        "covered": true,
+        "scenarios": [
+          "U02",
+          "U07",
+          "U09",
+          "U11"
+        ],
+        "note": "场景级覆盖：这些场景 admit 更长的悬空引用路径（U02 长度 4：[DB_SNAPSHOT, DB_UNLINK, BLOB_DELETE, BLOB_SNAPSHOT]；U07 长度 4：[BLOB_SNAPSHOT, BLOB_PUT, DB_LINK, DB_SNAPSHOT]；U09 长度 4：[BLOB_SNAPSHOT, BLOB_PUT_NEW, DB_REPOINT, DB_SNAPSHOT]；U11 长度 4 同理）。按 §4.6 最短反例口径，期望反例本身为长度 3 的孤立路径，不含 DANGLING_REFERENCE 诊断。"
+      },
+      {
+        "item": "delete across snapshots",
+        "covered": true,
+        "scenarios": [
+          "U02",
+          "U08",
+          "U12",
+          "G03",
+          "G07",
+          "G10"
+        ],
+        "note": "删除操作横跨两次快照的 U02/U08/U12 为 UNSAFE；删除完成后才备份的 G03/G07/G10 为 SAFE。"
+      },
+      {
+        "item": "update old-version remnant",
+        "covered": true,
+        "scenarios": [
+          "U03",
+          "U09",
+          "U10",
+          "U11"
+        ],
+        "note": "场景级覆盖：U03 长度 5 路径 [DB_SNAPSHOT, BLOB_PUT_NEW, DB_REPOINT, BLOB_DELETE_OLD, BLOB_SNAPSHOT] 中 DB 快照仍引旧版 A-v1@1 而 Blob 快照已删旧版（旧版缺失）；U09/U10/U11 的最短反例中旧版残留在 Blob 快照内而新版孤立。"
+      },
+      {
+        "item": "update new-version missing",
+        "covered": true,
+        "scenarios": [
+          "U09",
+          "U11"
+        ],
+        "note": "场景级覆盖：U09 长度 4 路径 [BLOB_SNAPSHOT, BLOB_PUT_NEW, DB_REPOINT, DB_SNAPSHOT] 中 DB 快照已指新版 A-v2@2 而 Blob 快照只有旧版 A-v1@1（新版缺失）；U11 长度 4 同理（B-v2@2）。"
+      },
+      {
+        "item": "two-operation interleave",
+        "covered": true,
+        "scenarios": [
+          "U05",
+          "U06",
+          "U11",
+          "U12"
+        ],
+        "note": "两个独立操作的交错场景；最短反例均为长度 3（只涉及其中一个操作），双操作交错的不一致形态见各场景 reason 中的长度 4 路径。"
+      },
+      {
+        "item": "correct snapshot after pause-writes",
+        "covered": true,
+        "scenarios": [
+          "G09",
+          "G10",
+          "G11",
+          "G12"
+        ],
+        "note": "PAUSE_WRITES 下两次快照必落在同一合法边界，全部 SAFE。"
+      },
+      {
+        "item": "max-event performance scenario",
+        "covered": true,
+        "scenarios": [
+          "G12"
+        ],
+        "note": "G12：4 次上传，8 个原子修改事件 + 2 个快照事件 = 10，总事件数恰为 §10.3 上限；性能门由 T012 验收。"
+      }
+    ]
+  }
+}

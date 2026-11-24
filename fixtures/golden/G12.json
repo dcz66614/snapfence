@@ -1,0 +1,44 @@
+{
+  "fixtureId": "G12",
+  "scenario": {
+    "scenarioId": "G12_PAUSE_WRITES_FOUR_UPLOADS",
+    "strategy": "PAUSE_WRITES",
+    "maxEvents": 10,
+    "operations": [
+      {
+        "opId": "upload-A",
+        "kind": "UPLOAD",
+        "fileId": "A",
+        "objectId": "A-v1",
+        "digest": "fixture-digest-A"
+      },
+      {
+        "opId": "upload-B",
+        "kind": "UPLOAD",
+        "fileId": "B",
+        "objectId": "B-v1",
+        "digest": "fixture-digest-B"
+      },
+      {
+        "opId": "upload-C",
+        "kind": "UPLOAD",
+        "fileId": "C",
+        "objectId": "C-v1",
+        "digest": "fixture-digest-C"
+      },
+      {
+        "opId": "upload-D",
+        "kind": "UPLOAD",
+        "fileId": "D",
+        "objectId": "D-v1",
+        "digest": "fixture-digest-D"
+      }
+    ]
+  },
+  "expectedVerdict": "SAFE_WITHIN_BOUND",
+  "expectedDiagnostics": [],
+  "expectedCounterexample": [],
+  "expectedCounterexampleLength": 0,
+  "eventCount": 10,
+  "reason": "PAUSE_WRITES：四次上传，8 个原子修改事件 + 2 个快照事件 = 10，总事件数恰为 §10.3 上限。两次快照必落在同一合法边界（任一上传完成后的边界均可），全部合法路径的快照对均为边界态，一致。SAFE。"
+}

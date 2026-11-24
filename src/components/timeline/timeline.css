@@ -1,0 +1,516 @@
+/* SnapFence (P030) — T008 dual-track timeline UI styles. Plain CSS, no
+ * external fonts or assets; the product runs fully offline. Colours:
+ * database lane blue #2563eb, Blob lane green #059669, dangling-reference
+ * red #dc2626, orphan-Blob amber #d97706, counterexample path purple
+ * #7c3aed. Colour is never the only signal: every state also has a text
+ * label (PROJECT_BOOK.md §5.3). */
+
+.sf-app {
+  font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC",
+    "Microsoft YaHei", sans-serif;
+  color: #1e293b;
+  background: #f8fafc;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px 20px 32px;
+  line-height: 1.5;
+}
+
+.sf-app code {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 0.92em;
+  background: #e2e8f0;
+  padding: 0 4px;
+  border-radius: 3px;
+}
+
+.sf-header h1 {
+  margin: 0 0 4px;
+  font-size: 28px;
+}
+
+.sf-header p {
+  margin: 0 0 12px;
+  color: #475569;
+}
+
+.sf-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: end;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.sf-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.sf-controls select {
+  min-width: 220px;
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #94a3b8;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.sf-controls button {
+  padding: 8px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: #2563eb;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.sf-controls button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.sf-status {
+  font-weight: 600;
+}
+
+.sf-meta {
+  font-size: 13px;
+  color: #475569;
+}
+
+.sf-error {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.sf-running {
+  color: #475569;
+}
+
+.sf-empty {
+  background: #fff;
+  border: 1px dashed #94a3b8;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  color: #475569;
+}
+
+/* --- Timeline --- */
+
+.sf-timeline {
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.sf-timeline-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.sf-timeline-head h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.sf-timeline-head span {
+  font-size: 13px;
+  color: #475569;
+}
+
+.sf-timeline-body {
+  position: relative;
+  margin-top: 8px;
+  padding-top: 46px;
+}
+
+.sf-lanes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sf-counterexample-svg {
+  position: absolute;
+  top: 46px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  /* No bottom: the height comes from the inline style in Timeline.tsx —
+     an <svg> is a replaced element and would otherwise size itself from
+     its intrinsic viewBox ratio and overflow the timeline. */
+  pointer-events: none;
+  z-index: 3;
+}
+
+.sf-snapshot-marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 2px dashed;
+  transform: translateX(-1px);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.sf-snapshot-label {
+  position: absolute;
+  top: 0;
+  left: 4px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.sf-lane {
+  border-left: 4px solid;
+  padding: 8px 0 8px 10px;
+  background: #f8fafc;
+  border-radius: 4px;
+}
+
+.sf-lane-head {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.sf-lane-title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.sf-lane-subtitle {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.sf-lane-track {
+  position: relative;
+  height: 118px;
+}
+
+.sf-lane-track.sf-compact {
+  height: 180px;
+}
+
+.sf-lane-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: 2px solid #cbd5e1;
+}
+
+.sf-lane-empty {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.sf-event-chip {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 148px;
+  background: #fff;
+  border: 2px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  box-shadow: 0 1px 3px rgb(15 23 42 / 0.12);
+  /* V-01 (T010): chips paint above the counterexample SVG (z-index 3)
+     and the snapshot markers (z-index 2), so neither line can cross
+     through chip text any more. The chip background is opaque, so the
+     lines are hidden behind the chip and reappear between chips. */
+  z-index: 4;
+}
+
+.sf-event-kind {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.sf-event-id {
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 11px;
+  color: #475569;
+  word-break: break-all;
+  /* V-01 (T010): explicit line-height so chip sub-text lines keep their
+     spacing and never crowd each other or the chip border. */
+  line-height: 1.4;
+}
+
+.sf-event-detail {
+  color: #475569;
+  /* V-01 (T010): explicit line-height, same reason as above. */
+  line-height: 1.4;
+}
+
+.sf-event-mark {
+  font-weight: 700;
+  color: #7c3aed;
+}
+
+.sf-event-chip.sf-replay-future {
+  /* FIX-V-01: NEVER dim a chip with `opacity` on the whole element.
+     T010 raised chips to z-index 4 with an opaque background, but
+     `opacity: 0.45` here made the entire chip — background AND text —
+     45% transparent, so the counterexample polyline (z-index 3) and the
+     snapshot marker lines (z-index 2) showed straight through the chip
+     background and crossed the chip text at replay step 0, when every
+     chip except the first is "future". The fix keeps the chip fully
+     opaque and dims it with a solid grey-blue background + muted text
+     colours instead, so the lines stay hidden behind the chip while the
+     future/current/done distinction remains visible (future = grey
+     background + grey text, no outline; current = white + purple
+     outline + "▶ 当前"; done = white + "✓ 已回放"). */
+  background: #e8edf3;
+  color: #64748b;
+}
+
+.sf-event-chip.sf-replay-future .sf-event-kind {
+  color: #475569;
+}
+
+.sf-event-chip.sf-replay-future .sf-event-id,
+.sf-event-chip.sf-replay-future .sf-event-detail {
+  color: #64748b;
+}
+
+.sf-event-chip.sf-replay-future .sf-event-mark {
+  color: #94a3b8;
+}
+
+.sf-event-chip.sf-replay-current {
+  outline: 3px solid #7c3aed;
+  outline-offset: 1px;
+}
+
+.sf-event-chip.sf-counterexample {
+  border-left-width: 6px;
+}
+
+.sf-event-chip.sf-snapshot-chip {
+  border-style: dashed;
+}
+
+/* --- Counterexample replay --- */
+
+.sf-counterexample {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 10px;
+}
+
+.sf-counterexample-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.sf-step-indicator {
+  font-weight: 700;
+}
+
+.sf-replay-controls {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+  flex-wrap: wrap;
+}
+
+.sf-replay-controls button {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: 1px solid #2563eb;
+  background: #fff;
+  color: #2563eb;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.sf-replay-controls button:disabled {
+  border-color: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.sf-step-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+  background: #f1f5f9;
+  border-radius: 4px;
+  padding: 8px 10px;
+}
+
+.sf-counterexample-list {
+  margin: 8px 0 0;
+  padding-left: 20px;
+  font-size: 13px;
+}
+
+.sf-counterexample-list li.sf-step-done {
+  color: #15803d;
+}
+
+.sf-counterexample-list li.sf-step-current {
+  font-weight: 700;
+  color: #7c3aed;
+}
+
+/* --- Inspector --- */
+
+.sf-inspector {
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.sf-inspector h2 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.sf-inspector h3 {
+  margin: 16px 0 6px;
+  font-size: 16px;
+}
+
+.sf-verdict {
+  margin: 0;
+}
+
+.sf-verdict > div {
+  display: flex;
+  gap: 10px;
+  padding: 4px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.sf-verdict dt {
+  min-width: 96px;
+  font-weight: 700;
+}
+
+.sf-verdict dd {
+  margin: 0;
+}
+
+.sf-verdict-zh {
+  display: block;
+  margin-top: 2px;
+  color: #475569;
+  font-size: 14px;
+}
+
+.sf-diagnostics {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sf-diagnostic {
+  border: 1px solid #e2e8f0;
+  border-left: 5px solid;
+  border-radius: 4px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sf-diagnostic-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.sf-diagnostic-label {
+  font-weight: 700;
+}
+
+.sf-diagnostic-severity {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.sf-diagnostic-explanation,
+.sf-diagnostic-message,
+.sf-diagnostic-target {
+  font-size: 14px;
+}
+
+.sf-diagnostic details {
+  font-size: 14px;
+}
+
+.sf-counterexample-sequence {
+  font-size: 14px;
+}
+
+.sf-diff-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.sf-diff-table th,
+.sf-diff-table td {
+  border: 1px solid #e2e8f0;
+  padding: 5px 8px;
+  text-align: left;
+}
+
+.sf-diff-table th {
+  background: #f1f5f9;
+}
+
+.sf-diff-status {
+  font-weight: 700;
+}
+
+.sf-diff-legend {
+  font-size: 13px;
+  color: #475569;
+}
+
+.sf-footer {
+  font-size: 13px;
+  color: #64748b;
+}

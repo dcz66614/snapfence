@@ -1,0 +1,38 @@
+{
+  "fixtureId": "U12",
+  "scenario": {
+    "scenarioId": "U12_FILE_FIRST_UPDATE_DELETE_NO_BOUNDARY",
+    "strategy": "FILE_FIRST",
+    "maxEvents": 10,
+    "operations": [
+      {
+        "opId": "update-A",
+        "kind": "UPDATE",
+        "fileId": "A",
+        "objectId": "A-v2",
+        "oldObjectId": "A-v1",
+        "digest": "fixture-digest-A-v2"
+      },
+      {
+        "opId": "delete-B",
+        "kind": "DELETE",
+        "fileId": "B",
+        "objectId": "B-v1"
+      }
+    ]
+  },
+  "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+  "expectedDiagnostics": [
+    "IN_FLIGHT_OPERATION",
+    "NO_COMMON_BOUNDARY",
+    "ORPHAN_BLOB"
+  ],
+  "expectedCounterexample": [
+    "BLOB_SNAPSHOT",
+    "delete-B:DB_UNLINK",
+    "DB_SNAPSHOT"
+  ],
+  "expectedCounterexampleLength": 3,
+  "eventCount": 7,
+  "reason": "BLOB_SNAPSHOT 先拍（Blob 含 A-v1 与 B-v1），delete-B 的 DB_UNLINK 删 DB 记录 B 后 DB_SNAPSHOT 捕获仅含 A 的 DB。DB（{A}）与 Blob（{A-v1, B-v1}）无共同边界：B-v1 孤立；delete-B 在途。合法边界为删除/更新各完成与否的组合态，本快照对不等于其中任一。最短性：长度 2 的终态一致；本反例是长度 3 中按 BFS 字典序最先弹出的不一致终态。"
+}

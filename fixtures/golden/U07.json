@@ -1,0 +1,31 @@
+{
+  "fixtureId": "U07",
+  "scenario": {
+    "scenarioId": "U07_FILE_FIRST_UPLOAD_DANGLING",
+    "strategy": "FILE_FIRST",
+    "maxEvents": 10,
+    "operations": [
+      {
+        "opId": "upload-B",
+        "kind": "UPLOAD",
+        "fileId": "B",
+        "objectId": "B-v1",
+        "digest": "fixture-digest-B"
+      }
+    ]
+  },
+  "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+  "expectedDiagnostics": [
+    "IN_FLIGHT_OPERATION",
+    "NO_COMMON_BOUNDARY",
+    "ORPHAN_BLOB"
+  ],
+  "expectedCounterexample": [
+    "upload-B:BLOB_PUT",
+    "BLOB_SNAPSHOT",
+    "DB_SNAPSHOT"
+  ],
+  "expectedCounterexampleLength": 3,
+  "eventCount": 4,
+  "reason": "upload-B 的 BLOB_PUT 先写 B-v1，随后 BLOB_SNAPSHOT 捕获到 B-v1，最后 DB_SNAPSHOT 捕获空 DB（DB_LINK 未执行）。Blob 含 B-v1 而 DB 无记录，B-v1 孤立；upload-B 在两次快照捕获时在途；快照对无共同边界。最短性：长度 2 的终态一致；长度 3 的终态中 [BLOB_SNAPSHOT, upload-B:BLOB_PUT, DB_SNAPSHOT] 的快照对双空（一致），本反例是其后按字典序最先弹出的不一致终态。另：§9.2 的 4 事件顺序 [BLOB_SNAPSHOT, BLOB_PUT, DB_LINK, DB_SNAPSHOT] 也是不一致（悬空引用：DB 快照引 B-v1，Blob 快照无 B-v1），但不是最短。"
+}

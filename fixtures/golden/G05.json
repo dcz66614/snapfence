@@ -1,0 +1,15 @@
+{
+  "fixtureId": "G05",
+  "scenario": {
+    "scenarioId": "G05_FILE_FIRST_IDLE",
+    "strategy": "FILE_FIRST",
+    "maxEvents": 10,
+    "operations": []
+  },
+  "expectedVerdict": "SAFE_WITHIN_BOUND",
+  "expectedDiagnostics": [],
+  "expectedCounterexample": [],
+  "expectedCounterexampleLength": 0,
+  "eventCount": 2,
+  "reason": "空闲场景：无操作，只有两次快照；唯一合法路径 [BLOB_SNAPSHOT, DB_SNAPSHOT]，快照对双空，等于初始边界 0，一致。SAFE。"
+}

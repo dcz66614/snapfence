@@ -1,0 +1,23 @@
+{
+  "fixtureId": "G09",
+  "scenario": {
+    "scenarioId": "G09_PAUSE_WRITES_UPLOAD_COMPLETE",
+    "strategy": "PAUSE_WRITES",
+    "maxEvents": 10,
+    "operations": [
+      {
+        "opId": "upload-A",
+        "kind": "UPLOAD",
+        "fileId": "A",
+        "objectId": "A-v1",
+        "digest": "fixture-digest-A"
+      }
+    ]
+  },
+  "expectedVerdict": "SAFE_WITHIN_BOUND",
+  "expectedDiagnostics": [],
+  "expectedCounterexample": [],
+  "expectedCounterexampleLength": 0,
+  "eventCount": 4,
+  "reason": "PAUSE_WRITES：快照不得在操作在途时执行，且两次快照之间不得有数据事件；故两次快照必落在同一合法边界（操作开始前，或 upload-A 完成后）。全部合法路径的快照对均为边界态，一致。SAFE。"
+}

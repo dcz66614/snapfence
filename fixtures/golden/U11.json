@@ -1,0 +1,39 @@
+{
+  "fixtureId": "U11",
+  "scenario": {
+    "scenarioId": "U11_FILE_FIRST_UPLOAD_UPDATE_MIX",
+    "strategy": "FILE_FIRST",
+    "maxEvents": 10,
+    "operations": [
+      {
+        "opId": "upload-A",
+        "kind": "UPLOAD",
+        "fileId": "A",
+        "objectId": "A-v1",
+        "digest": "fixture-digest-A"
+      },
+      {
+        "opId": "update-B",
+        "kind": "UPDATE",
+        "fileId": "B",
+        "objectId": "B-v2",
+        "oldObjectId": "B-v1",
+        "digest": "fixture-digest-B-v2"
+      }
+    ]
+  },
+  "expectedVerdict": "UNSAFE_WITHIN_BOUND",
+  "expectedDiagnostics": [
+    "IN_FLIGHT_OPERATION",
+    "NO_COMMON_BOUNDARY",
+    "ORPHAN_BLOB"
+  ],
+  "expectedCounterexample": [
+    "update-B:BLOB_PUT_NEW",
+    "BLOB_SNAPSHOT",
+    "DB_SNAPSHOT"
+  ],
+  "expectedCounterexampleLength": 3,
+  "eventCount": 7,
+  "reason": "update-B 的 BLOB_PUT_NEW 先写新版 B-v2@2，随后 BLOB_SNAPSHOT 捕获 {B-v1, B-v2}，最后 DB_SNAPSHOT 捕获仍引旧版 B-v1 的 DB（DB_REPOINT 未执行）。B-v2@2 孤立；update-B 在途；快照对无共同边界（上传 A 尚未开始，不影响本对）。最短性：长度 2 的终态一致；长度 3 的终态按字典序：[BLOB_SNAPSHOT, update-B:BLOB_PUT_NEW, DB_SNAPSHOT] 与 [BLOB_SNAPSHOT, upload-A:BLOB_PUT, DB_SNAPSHOT] 的快照对均等于初始边界（一致），本反例是其后最先弹出的不一致终态。注：“版本混合”模式存在于更长路径：[BLOB_SNAPSHOT, update-B:BLOB_PUT_NEW, update-B:DB_REPOINT, DB_SNAPSHOT]（长度 4）——DB 快照已指 B-v2@2，Blob 快照只有 B-v1@1，悬空引用。"
+}
